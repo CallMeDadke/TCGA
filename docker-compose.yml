@@ -1,0 +1,44 @@
+services:
+  minio:
+    image: minio/minio:latest
+    container_name: tcga_minio
+    command: server /data --console-address ":9001"
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      - MINIO_ROOT_USER=danijeljak
+      - MINIO_ROOT_PASSWORD=danijminio
+    volumes:
+      - ./minio-data:/data
+    restart: unless-stopped
+
+  mongodb:
+    image: mongo:6
+    container_name: tcga_mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./mongo-data:/data/db
+    restart: unless-stopped
+
+  tcga-pipeline:
+    build: .
+    container_name: tcga_pipeline
+    depends_on:
+      - minio
+      - mongodb
+    volumes:
+      - .:/app
+      - ./data:/app/data
+    working_dir: /app
+    environment:
+      - MINIO_ENDPOINT=minio:9000
+      - MINIO_ACCESS_KEY=danijeljak
+      - MINIO_SECRET_KEY=danijminio
+      - MINIO_SECURE=false
+      - MINIO_BUCKET=tcga-bucket
+      - MONGODB_DB=tcga
+      - MONGODB_COLL=gene_expression
+      - DATA_TYPE=IlluminaHiSeq pancan normalized
+    command: tail -f /dev/null
