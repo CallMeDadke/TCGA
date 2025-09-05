@@ -17,7 +17,7 @@ CFG = {
         'secure': os.getenv('MINIO_SECURE', 'False').lower() == 'true'
     },
     'mongo': {
-        'uri': os.getenv('MONGODB_URI', 'mongodb+srv://dado_user:<db_password>@cluster0.vwod2pa.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'),
+        'uri': os.getenv('MONGODB_URI', 'mongodb+srv://<user>:<password>@cluster0.vwod2pa.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'),
         'db': os.getenv('MONGODB_DB', 'tcga'),
         'coll': os.getenv('MONGODB_COLL', 'gene_expression')
     },

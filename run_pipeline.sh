@@ -15,6 +15,6 @@ echo "Step 3: Adding clinical data..."
 python src/join_clinical.py
 
 echo "Step 4: Generating visualizations..."
-python src/visualize.py
+#python src/visualize.py
 
 echo "Pipeline completed!"
